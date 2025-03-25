@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modules>
+    <module>
+        <id>com.example.testmodule</id>
+        <name>Test Module</name>
+        <description>A comprehensive test module with multiple scopes</description>
+        <version>1.0.0</version>
+        <requiredignitionversion>8.1.45</requiredignitionversion>
+        <requiredframeworkversion>8</requiredframeworkversion>
+        <license>license.html</license>
+        <documentation>doc/readme.html</documentation>
+
+        <!-- Gateway scope -->
+        <jar scope="G">module-gateway-1.0.0.jar</jar>
+        <hook scope="G">com.example.testmodule.GatewayHook</hook>
+
+        <!-- Client scope -->
+        <jar scope="C">module-client-1.0.0.jar</jar>
+        <hook scope="C">com.example.testmodule.ClientHook</hook>
+
+        <!-- Designer scope -->
+        <jar scope="D">module-designer-1.0.0.jar</jar>
+        <hook scope="D">com.example.testmodule.DesignerHook</hook>
+
+        <!-- Module dependencies -->
+        <depends scope="G">com.inductiveautomation.vision</depends>
+        <depends scope="C">com.inductiveautomation.perspective</depends>
+    </module>
+</modules>

@@ -20,19 +20,24 @@ class ModuleXmlGenerator {
 
                 // Write required elements
                 module.id?.let { writeElement(writer, "id", it) }
+                    ?: throw IllegalArgumentException("Module id is required")
                 module.name?.let { writeElement(writer, "name", it) }
+                    ?: throw IllegalArgumentException("Module name is required")
                 module.description?.let { writeElement(writer, "description", it) }
                 module.version?.let { writeElement(writer, "version", it) }
+                    ?: throw IllegalArgumentException("Module version is required")
                 writeElement(writer, "requiredignitionversion", module.requiredIgnitionVersion)
                 writeElement(writer, "requiredframeworkversion", module.requiredFrameworkVersion)
-                writeElement(writer, "license", module.license)
-                writeElement(writer, "documentation", module.documentation)
+
+                // Write optional elements only if they exist
+                module.license?.let { writeElement(writer, "license", it) }
+                module.documentation?.let { writeElement(writer, "documentation", it) }
 
                 // Write jar entries
                 module.jars.forEach { jar ->
                     writer.writeStartElement("jar")
                     jar.scope?.let { writer.writeAttribute("scope", it) }
-                    jar.path?.let { writer.writeCharacters(it) }
+                    jar.path?.let { writer.writeCharacters(File(it).name) } // Use only the file name, not the full path
                     writer.writeEndElement()
                 }
 
@@ -41,6 +46,14 @@ class ModuleXmlGenerator {
                     writer.writeStartElement("hook")
                     hook.scope?.let { writer.writeAttribute("scope", it) }
                     hook.className?.let { writer.writeCharacters(it) }
+                    writer.writeEndElement()
+                }
+
+                // Write depends entries
+                module.depends.forEach { depend ->
+                    writer.writeStartElement("depends")
+                    depend.scope?.let { writer.writeAttribute("scope", it) }
+                    depend.id?.let { writer.writeCharacters(it) }
                     writer.writeEndElement()
                 }
 
